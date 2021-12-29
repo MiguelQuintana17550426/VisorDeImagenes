@@ -1,0 +1,41 @@
+﻿body {
+    height: 100%;
+    margin: 0;
+    background-image: url('./imagen?imagen=fondo2.jpg');
+    background-size: cover;
+    //background: rgb(36,16,4);
+    //background: radial-gradient(circle, rgba(36,16,4,1) 0%, rgba(0,0,0,1) 100%);
+}
+.imagen1{
+    height:100%;
+}
+.imagen{
+
+}
+.contenedorimg{
+    display:flex;
+    justify-content:center;
+}
+.imagenYopciones {
+    display: flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+}
+.imagenAncho{
+    width:49%;
+}
+.contenedorimg{
+    width:100%;
+}
+.controles{
+    display:flex;
+    justify-content:center;
+}
+
+    .controles button {
+        background-color: transparent;
+        border: solid #fff8e7 2px;
+        border-radius: 10px 3px;
+        margin: 4px;
+        color: #fff8e7;
+    }
