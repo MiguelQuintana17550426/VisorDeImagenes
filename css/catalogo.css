@@ -1,0 +1,41 @@
+body {
+  min-height: 100%;
+  margin: 0;
+  background-image: url("./imagen?imagen=fondo2.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-family: "Open Sans", sans-serif;
+  color: white;
+  min-width: 255px;
+}
+
+.catalogo {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.catalogo div {
+  padding: 5px;
+  margin: 5px;
+  background-color: #c7c7c769;
+  border-radius: 10px 10px;
+  backdrop-filter: blur(5px);
+  display: inline;
+}
+
+.catalogo div a img {
+  width: fit-content;
+  height: 25em;
+  max-width: 100%;
+}
+
+.catalogo div p {
+  margin: 0px;
+  text-align: center;
+  text-decoration: none;
+}
+
+/*# sourceMappingURL=catalogo.css.map */

@@ -1,85 +1,148 @@
-var numeroDePag = 5;
-const ruta = './imagen?imagen=imagen';
-const formato=".png"
-var imagen = document.getElementById("imagen1");
-var imagen2 = document.getElementById("imagen2");
-var imagenes = document.getElementById("imagenes");
-const clasesDeImagenes = ['imagen', 'imagen1', 'imagenAncho'];
-var actual = 1;
-var paginaActual = 1;
-
-document.addEventListener('keyup', teclado);
-
-function teclado(e) {
-    switch (e.code) {
-        case 'ArrowRight':
-            pasarhoja();
-            break;
-        case 'ArrowLeft':
-            anteriorhoja();
-            break;
-        default:
-            break;
-    }
-}
-
-function escalaOriginal() {
-    cambiar(0);
-}
-function ajustarAlto() {
-    cambiar(1);
-
-}
-
-function ajustarAncho() {
-    cambiar(2);
-}
-
-function cambiar(cambiaPor) {
-    eval("imagen.className=imagen.className.replace(/(?:^|\s)" + clasesDeImagenes[actual] + "(?!\S)/g, clasesDeImagenes[cambiaPor]);");
-    eval("imagen2.className=imagen2.className.replace(/(?:^|\s)" + clasesDeImagenes[actual] + "(?!\S)/g, clasesDeImagenes[cambiaPor]);");
-    eval("imagenes.className=imagenes.className.replace(/(?:^|\s)" + clasesDeImagenes[actual] + "(?!\S)/g, clasesDeImagenes[cambiaPor]);");
-    actual = cambiaPor;
-}
-
-function pasarhoja() {
-    if (paginaActual + 2 > numeroDePag) return;//finaliza si es true
-    paginaActual += 2;
-    imagen.src = ruta + paginaActual+formato;
-    if (paginaActual + 1 <= numeroDePag) {
-        imagen2.style = "";
-        imagen2.src = ruta + (paginaActual + 1)+formato;
-    }
-    else {
-        imagen2.style = "display:none";
-    }
-}
-
-function anteriorhoja() {
-    if (paginaActual - 2 <=0) return;//finaliza si es true
-    paginaActual -= 2;
-    imagen.src = ruta + paginaActual+formato;
-    if (paginaActual + 1 <=numeroDePag) {
-        imagen2.style = "";
-        imagen2.src = ruta + (paginaActual + 1)+formato;
-    }
-    else {
-        imagen2.style = "display:none";
-    }
+var numeroDePag = parseInt(window.sessionStorage.numeroDePag);
+var obra = window.sessionStorage.obra;
+var episodio = window.sessionStorage.episodio;
+var nombreBase = sessionStorage.nombreBase;
+var extension = sessionStorage.extension;
+var ajustandoPorAlto = false;
+var ajustandoPorAncho = false;
+var img = {
+    elementos: [document.getElementById('imagen1'), document.getElementById('imagen2')],
+    estilos: [{}, {}],
+    paginas: [1,2]
+};
+var imagenes = {
+    elemento: document.getElementById('imagenes'),
+    style:[]
 }
 
 
 function alcargar() {
-    imagen.src = ruta + paginaActual + formato;
-    if (numeroDePag >1) {
-        imagen2.src = ruta + (paginaActual + 1) + formato;
+    if (window.innerHeight > 1080) {
+        document.getElementById('body').style.backgroundImage = './imagen?imagen=fondo3_4k.jpg';
+    } else if (window.innerWidth > 1920) {
+        document.getElementById('body').style.backgroundImage = './imagen?imagen=fondo3_4k.jpg';
     }
-    imagen.style = "";
-    imagen2.style = "";
+
+    for (var i = img.elementos.length - 1; i >= 0; i--) {
+        img.estilos[i] = {};
+    }
+    img.elementos[0].src = './imagen?imagen=' + nombreBase + '1' + extension +
+        '&obra=' + obra +
+            '&episodio='+episodio;
+    if (numeroDePag > 1) {
+        img.elementos[1].src = './imagen?imagen='+nombreBase+'2'+extension+'&obra=' + obra +
+            '&episodio='+episodio;
+    }
+    aplicarEstilo(img.elementos, img.estilos);
+    bodyNoPequeno();
+    //aplicarEstilo(imagenes.elemento, [imagenes.style]);
 }
-function tamano(){
-    var d=document.getElementById('imagen1');
-    for (a in d) {
-        a.style = a.style + 'height:' + window.innerHeight+';';
+
+function ajustarPorAltura() {
+    if (ajustandoPorAlto) {
+        img.estilos[0]['height'] = window.innerHeight + 'px';
+        img.estilos[1]['height'] = window.innerHeight + 'px';
+        aplicarEstilo(img.elementos, img.estilos);
+        window.scroll(0, imagenes.elemento.offsetTop);
+    } else {
+        img.estilos[0]['height'] = '';
+        img.estilos[1]['height'] = '';
+        aplicarEstilo(img.elementos, img.estilos);
+    }
+    bodyNoPequeno();
+}
+
+function rezise() {
+    ajustarPorAltura();
+    ajustarPorAncho();
+}
+
+function ajustarPorAncho() {
+    if (ajustandoPorAncho) {
+        img.estilos[0]['width'] = window.innerWidth/2 + 'px';
+        img.estilos[1]['width'] = window.innerWidth/2 + 'px';
+        aplicarEstilo(img.elementos, img.estilos);
+        window.scroll(0, imagenes.elemento.offsetTop);
+    } else {
+        img.estilos[0]['width'] = '';
+        img.estilos[1]['width'] = '';
+        aplicarEstilo(img.elementos, img.estilos);
+    }
+    bodyNoPequeno();
+}
+
+function escalaOriginal() {
+    img.estilos[0]['height'] = '';
+    img.estilos[1]['height'] = '';
+    img.estilos[0]['width'] = '';
+    img.estilos[1]['width'] = '';
+    aplicarEstilo(img.elementos, img.estilos);
+    bodyNoPequeno();
+    ajustandoPorAlto = false;
+    ajustandoPorAncho = false;
+}
+
+function aplicarEstilo(elementos, estilos) {
+    for (var e = elementos.length - 1; e >= 0; e--) {
+        elementos[e].style = {};
+        var llaves = Object.keys(estilos[e]);
+        for (var ll = llaves.length - 1; ll >= 0; ll--) {
+            elementos[e].style[llaves[ll]] = estilos[e][llaves[ll]];
+        }
+    }
+}
+
+function bodyNoPequeno() {
+    var body = document.getElementById('body');
+    body.style = '';
+    body.style.minHeight = window.innerHeight + "px";
+    body.style.minWidth = (window.innerWidth - 10) + "px";
+    return;
+}
+
+function pasarHoja() {
+    console.log(img);
+    if ((img.paginas[0] < numeroDePag && img.paginas[1] < numeroDePag)) {
+        img.paginas[0] += 2;
+        img.paginas[1] += 2;
+    }
+    actualizarHoja();
+}
+
+function anteriorHoja() {
+    console.log(img);
+    if ((img.paginas[0] > 1 && img.paginas[1] > 2)) {
+        img.paginas[0] -= 2;
+        img.paginas[1] -= 2;
+    }
+    actualizarHoja();
+}
+
+function actualizarHoja() {
+    for (var i = img.elementos.length - 1; i >= 0; i--) {
+        if (img.paginas[i] <= numeroDePag && img.paginas[i]>0) {
+            //img.elementos[i].src = './imagen?imagen=imagen' + img.paginas[i] + '.png';
+            img.elementos[i].src = './imagen?imagen=' + nombreBase + img.paginas[i] + extension +
+        '&obra=' + obra +
+            '&episodio='+episodio;
+
+            img.estilos[i]['display'] = '';
+        } else {
+            img.estilos[i]['display'] = 'none';
+        }
+    }
+    aplicarEstilo(img.elementos, img.estilos);
+}
+
+function pulsar(e) {
+    switch (e.key) {
+        case 'ArrowRight':
+            pasarHoja();
+            break;
+        case 'ArrowLeft':
+            anteriorHoja();
+            break;
+        default:
+            break;
     }
 }

@@ -1,0 +1,29 @@
+doctype html
+html
+    head
+        meta(name='viewport', content='width=device-width initial-scale=1.0')
+        title visor
+        //link(rel="preconnect" href="https://fonts.googleapis.com")
+        //link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
+        //link(href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet")
+        link(href='./css?css=css.css' rel='stylesheet' type='text/css')
+        link(href='./css?css=menu.css' rel='stylesheet' type='text/css')
+        script='window.sessionStorage.setItem(\'obra\',\''+obra+'\');\nwindow.sessionStorage.setItem(\'numeroDePag\','+numeroDePag+');\nwindow.sessionStorage.setItem(\'nombreBase\',\''+nombreBase+'\');\nwindow.sessionStorage.setItem(\'extension\',\''+extension+'\');\nsessionStorage.setItem(\'episodio\',\''+episodio+'\');'
+    body(onload='alcargar();' onresize='rezise();' id='body' onkeyup='pulsar(event);')
+        div
+            div(class="menu" id='menu')
+                button( onclick="escalaOriginal();" class="botonesDelMenu").
+                    100%
+                button(onclick="ajustandoPorAlto=!ajustandoPorAlto;ajustarPorAltura();" class="botonesDelMenu").
+                    ajustar altura
+                button(onclick="ajustandoPorAncho=!ajustandoPorAncho;ajustarPorAncho();" class="botonesDelMenu").
+                    ajustar Ancho
+            div(class="contenedorimg" id="imagenes")
+                img(src='/imagen?imagen=imagen1.png' alt="Error" id="imagen1" class="" style="display:none;")
+                img(src=" " alt="Error" id="imagen2" class="" style="display:none;")
+            div(class="controles")
+                button(onclick="anteriorHoja();").
+                    anterior
+                button(onclick="pasarHoja();").
+                    siguiente
+        script(src='./js?js=js.js' type='text/javascript')

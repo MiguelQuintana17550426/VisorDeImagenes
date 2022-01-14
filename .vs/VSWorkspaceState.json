@@ -1,8 +1,13 @@
 {
   "ExpandedNodes": [
     "",
+    "\\css",
+    "\\css-sass",
+    "\\imagen",
+    "\\js",
+    "\\src-sass",
     "\\views"
   ],
-  "SelectedNode": "\\views\\index.jade",
+  "SelectedNode": "\\css",
   "PreviewInSolutionExplorer": false
 }
